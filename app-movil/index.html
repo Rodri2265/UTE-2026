@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head data-p>
+<meta charset="utf-8" data-p>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" data-p>
+<meta name="theme-color" content="#1E3A86" data-p>
+<meta name="apple-mobile-web-app-capable" content="yes" data-p>
+<meta name="mobile-web-app-capable" content="yes" data-p>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" data-p>
+<meta name="apple-mobile-web-app-title" content="CHF UTPL" data-p>
+<link rel="manifest" href="manifest.webmanifest" data-p>
+<link rel="icon" href="icons/icon-192.png" data-p>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" data-p>
+<title data-p>Competencias Humanas para el Futuro</title>
+<style data-p>
+:root{
+  --tinta:#1C2230; --azul:#2447A0; --fondo:#F2F4F9; --tarjeta:#FFFFFF; --tenue:#5A6475; --linea:#DFE4EE;
+  --ambar:#A85F00; --ambar-fondo:#FDF1DE; --ok:#2E6B45; --hero:#1E3A86; --hero-sub:#C9D5F2; --oro:#FFCB7A;
+  --celda:#E6EBF5; --celda-pasada:#C9D3E8;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --barra:4.25rem; box-sizing:border-box;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --tinta:#E6EAF3; --azul:#A3B9F2; --fondo:#0F131A; --tarjeta:#171D28; --tenue:#A1ABBD; --linea:#273043;
+  --ambar:#F1AE4B; --ambar-fondo:#2A2113; --ok:#7CC49A; --hero:#1A2C5E; --celda:#1F2736; --celda-pasada:#2E3A52;}}
+:root[data-theme="dark"]{
+  --tinta:#E6EAF3; --azul:#A3B9F2; --fondo:#0F131A; --tarjeta:#171D28; --tenue:#A1ABBD; --linea:#273043;
+  --ambar:#F1AE4B; --ambar-fondo:#2A2113; --ok:#7CC49A; --hero:#1A2C5E; --celda:#1F2736; --celda-pasada:#2E3A52;}
+*,*::before,*::after{box-sizing:inherit}
+html,body{height:100%}
+body{margin:0;background:var(--fondo);color:var(--tinta);font-family:var(--sans);font-size:1.0625rem;line-height:1.5;-webkit-tap-highlight-color:transparent}
+a{color:var(--azul);overflow-wrap:anywhere}
+:focus-visible{outline:3px solid var(--ambar);outline-offset:2px;border-radius:6px}
+button{font:inherit;color:inherit}
+[hidden]{display:none!important}
+.oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Cabecera: nombre del curso y avance del semestre */
+.cabecera{position:sticky;top:0;z-index:5;background:var(--hero);color:#F4F7FD;padding:calc(env(safe-area-inset-top,0px) + .75rem) 1.15rem .85rem;
+  background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:20px 20px}
+.cab-fila{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:.1rem .75rem;max-width:40rem;margin:0 auto}
+.cabecera h1{margin:0;font-family:var(--serif);font-weight:600;font-size:1.45rem;line-height:1.15;letter-spacing:-.005em}
+.cabecera .codigo{margin:0;font-size:.82rem;color:var(--hero-sub);font-weight:600}
+.avance{max-width:40rem;margin:.55rem auto 0;display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:var(--hero-sub);font-weight:600}
+.avance-barra{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,.18);overflow:hidden}
+.avance-barra span{display:block;height:100%;background:var(--oro);width:0}
+
+main{overflow-x:clip;padding:1.1rem 1.1rem calc(var(--barra) + env(safe-area-inset-bottom,0px) + 1.75rem);max-width:40rem;margin:0 auto}
+.vista[hidden]{display:none}
+.titulo-vista{font-family:var(--serif);font-weight:600;font-size:1.6rem;margin:.1rem 0 .9rem;line-height:1.15}
+.subtitulo{font-family:var(--serif);font-weight:600;font-size:1.2rem;margin:1.75rem 0 .6rem}
+.fecha-hoy{color:var(--tenue);margin:0 0 .8rem;font-weight:500}
+.nota-zona{font-size:.85rem;color:var(--tenue);margin:.25rem 0 0}
+
+/* Hoy: próxima clase */
+.clase{background:var(--hero);color:#F4F7FD;border-radius:1.15rem;padding:1.1rem 1.15rem 1.15rem;display:flex;flex-wrap:wrap;gap:.95rem;align-items:flex-start}
+.clase > span:last-child{flex:1 1 12rem;min-width:0}
+.dia{background:var(--oro);color:#1C2230;border-radius:.8rem;min-width:3.6rem;padding:.4rem .3rem .45rem;text-align:center;line-height:1}
+.dia .d-sem{display:block;font-size:.78rem;font-weight:700}
+.dia .d-num{display:block;font-family:var(--serif);font-size:1.9rem;font-weight:600;margin:.1rem 0}
+.dia .d-mes{display:block;font-size:.78rem;font-weight:700}
+.clase .rotulo{margin:0;font-size:.88rem;color:var(--hero-sub);font-weight:600}
+.clase .tema{margin:.15rem 0 .35rem;font-size:1.18rem;font-weight:700;line-height:1.3}
+.clase .detalle{margin:0;font-size:.92rem;color:var(--hero-sub)}
+
+/* Hoy: próxima entrega, sin tarjeta, con número grande */
+.entrega{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;padding:1.1rem .25rem .2rem}
+.cuenta{font-family:var(--serif);font-weight:600;color:var(--ambar);text-align:center;line-height:.9;min-width:3.6rem}
+.cuenta .n{display:block;font-size:2.9rem}
+.cuenta .u{display:block;font-family:var(--sans);font-size:.78rem;font-weight:700;margin-top:.25rem}
+.entrega > span:last-child{flex:1 1 12rem;min-width:0}
+.entrega .rotulo{margin:0;font-size:.88rem;color:var(--tenue);font-weight:600}
+.entrega .nombre{margin:.05rem 0;font-size:1.15rem;font-weight:700}
+.entrega .detalle{margin:0;font-size:.92rem;color:var(--tenue)}
+
+/* Lo memorable: el semestre como matriz */
+.matriz-caja{margin:1.6rem 0 0;background:var(--tarjeta);border:1px solid var(--linea);border-radius:1.15rem;padding:1rem 1.1rem 1.05rem}
+.matriz-cab{display:flex;justify-content:space-between;align-items:baseline;gap:.5rem;margin:0 0 .75rem}
+.matriz-cab h2{margin:0;font-family:var(--serif);font-weight:600;font-size:1.2rem}
+.matriz-cab span{font-size:.85rem;color:var(--tenue)}
+.matriz{position:relative;padding:.35rem .9rem}
+.matriz::before,.matriz::after{content:"";position:absolute;top:0;bottom:0;width:.55rem;border:2.5px solid var(--tinta);opacity:.85}
+.matriz::before{left:0;border-right:0;border-radius:3px 0 0 3px}
+.matriz::after{right:0;border-left:0;border-radius:0 3px 3px 0}
+.matriz ol{min-width:0;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:.4rem}
+.matriz a{display:flex;align-items:center;justify-content:center;aspect-ratio:1;border-radius:.55rem;background:var(--celda);color:var(--tinta);text-decoration:none;font-family:var(--serif);font-size:1.15rem;font-weight:600;position:relative}
+.matriz a.pasada{background:var(--celda-pasada);color:var(--tenue)}
+.matriz a.examen{box-shadow:inset 0 0 0 2px var(--ambar)}
+.matriz a.examen::after{content:"";position:absolute;top:.28rem;right:.28rem;width:.38rem;height:.38rem;border-radius:50%;background:var(--ambar)}
+.matriz a.actual{background:var(--azul);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .matriz a.actual{color:#0F131A}}
+:root[data-theme="dark"] .matriz a.actual{color:#0F131A}
+.leyenda{display:flex;flex-wrap:wrap;gap:.35rem 1rem;margin:.8rem 0 0;padding:0;list-style:none;font-size:.82rem;color:var(--tenue)}
+.leyenda li{display:flex;align-items:center;gap:.35rem}
+.leyenda i{display:inline-block;width:.8rem;height:.8rem;border-radius:.2rem;background:var(--celda)}
+.leyenda i.l-act{background:var(--azul)} .leyenda i.l-pas{background:var(--celda-pasada)} .leyenda i.l-ex{background:var(--celda);box-shadow:inset 0 0 0 2px var(--ambar)}
+
+/* Listas tipo ajustes */
+.lista{list-style:none;margin:0;padding:0;background:var(--tarjeta);border:1px solid var(--linea);border-radius:1rem;overflow:hidden}
+.lista > li + li{border-top:1px solid var(--linea)}
+.fila-enlace{display:flex;align-items:center;gap:.85rem;padding:.85rem 1rem;text-decoration:none;color:var(--tinta);min-height:3.4rem}
+.fila-enlace svg.ico{width:1.35rem;height:1.35rem;color:var(--azul);flex-shrink:0}
+.fila-enlace .txt{flex:1}
+.fila-enlace .txt b{display:block;font-weight:650}
+.fila-enlace .txt small{display:block;color:var(--tenue);font-size:.88rem}
+.flecha{width:.5rem;height:.5rem;border-right:2px solid var(--tenue);border-top:2px solid var(--tenue);transform:rotate(45deg);flex-shrink:0}
+
+/* Semanas */
+.chips{display:flex;gap:.4rem;overflow-x:auto;margin:0 -1.1rem .9rem;padding:.15rem 1.1rem .45rem;scroll-snap-type:x proximity;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:0 0 auto;scroll-snap-align:center;width:2.75rem;height:2.75rem;border-radius:.6rem;border:1.5px solid var(--linea);background:var(--tarjeta);font-family:var(--serif);font-weight:600;font-size:1.05rem;cursor:pointer;position:relative}
+.chips button.examen::after{content:"";position:absolute;top:.25rem;right:.25rem;width:.36rem;height:.36rem;border-radius:50%;background:var(--ambar)}
+.chips button[aria-pressed="true"]{background:var(--azul);border-color:var(--azul);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chips button[aria-pressed="true"]{color:#0F131A}}
+:root[data-theme="dark"] .chips button[aria-pressed="true"]{color:#0F131A}
+.sem-cab h3{margin:0;font-family:var(--serif);font-weight:600;font-size:1.45rem;line-height:1.15}
+.sem-cab p{margin:.2rem 0 0;color:var(--tenue);font-size:.95rem}
+.sem-cab .estado-sem{display:inline-block;margin-top:.45rem;font-size:.8rem;font-weight:700;border-radius:999px;padding:.1rem .6rem;background:var(--celda);color:var(--tinta)}
+.sem-cab .estado-sem.ahora{background:var(--azul);color:#fff}
+ol.linea-tiempo{list-style:none;margin:1.1rem 0 0;padding:0}
+ol.linea-tiempo > li{display:grid;grid-template-columns:3.4rem minmax(0,1fr);gap:.8rem;padding-bottom:1rem;position:relative}
+ol.linea-tiempo > li:not(:last-child)::before{content:"";position:absolute;left:1.7rem;top:3.6rem;bottom:.2rem;width:2px;background:var(--linea)}
+.lt-dia{text-align:center;line-height:1;padding-top:.15rem}
+.lt-dia .d-sem{display:block;font-size:.78rem;font-weight:700;color:var(--tenue)}
+.lt-dia .d-num{display:block;font-family:var(--serif);font-size:1.7rem;font-weight:600;margin:.12rem 0}
+.lt-dia .d-mes{display:block;font-size:.78rem;font-weight:700;color:var(--tenue)}
+.sesion{background:var(--tarjeta);border:1px solid var(--linea);border-radius:.9rem;padding:.8rem .95rem}
+.sesion.examen{background:var(--ambar-fondo);border-color:var(--ambar)}
+.sesion .unidad{margin:0 0 .35rem;font-size:.84rem;font-weight:700;color:var(--azul)}
+.sesion .s-num{margin:0;font-size:.84rem;color:var(--tenue);font-weight:600}
+.sesion .s-tema{margin:.1rem 0 .2rem;font-weight:700;line-height:1.35}
+.sesion .s-act{margin:0;font-size:.94rem;color:var(--tenue)}
+.chip{display:inline-block;font-size:.8rem;font-weight:700;border-radius:999px;padding:.08rem .55rem;margin:.45rem .3rem 0 0;background:var(--celda);color:var(--azul)}
+.chip.evalua,.chip.nota{background:var(--ambar-fondo);color:var(--ambar);box-shadow:inset 0 0 0 1px var(--ambar)}
+details.contenidos{margin-top:.5rem}
+details.contenidos summary{cursor:pointer;font-size:.9rem;font-weight:700;color:var(--azul)}
+details.contenidos ul{margin:.4rem 0 0;padding-left:1.1rem;font-size:.93rem;color:var(--tenue)}
+details.contenidos li{margin-bottom:.2rem}
+.t-peso{font-weight:700;color:var(--tenue);font-size:.88rem;margin-left:.3rem}
+.pasos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(9rem,100%),1fr));gap:.6rem;margin-top:.5rem}
+
+/* Tareas */
+.aviso-tareas{display:flex;gap:.7rem;align-items:flex-start;background:var(--ambar-fondo);border-radius:.8rem;padding:.8rem .9rem;margin:0 0 1rem;font-size:.94rem}
+.aviso-tareas svg{width:1.3rem;height:1.3rem;color:var(--ambar);flex-shrink:0;margin-top:.1rem}
+.aviso-tareas p{margin:0}
+.resumen{display:flex;align-items:baseline;gap:.5rem;margin:0 0 .35rem}
+.resumen .n{font-family:var(--serif);font-weight:600;font-size:2rem;line-height:1}
+.resumen span{color:var(--tenue);font-weight:600}
+.barra-prog{height:6px;background:var(--linea);border-radius:3px;overflow:hidden;margin:0 0 1.1rem}
+.barra-prog span{display:block;height:100%;background:var(--ok);width:0;transition:width .25s}
+@media (prefers-reduced-motion:reduce){.barra-prog span{transition:none}}
+ul.tareas{list-style:none;margin:0 0 1rem;padding:0;background:var(--tarjeta);border:1px solid var(--linea);border-radius:1rem;overflow:hidden}
+ul.tareas li + li{border-top:1px solid var(--linea)}
+ul.tareas label{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.8rem;align-items:center;padding:.85rem 1rem;cursor:pointer;min-height:3.6rem}
+ul.tareas .t-nombre{display:block;font-weight:700}
+ul.tareas .t-fecha{display:block;font-size:.9rem;color:var(--tenue)}
+ul.tareas .t-falta{display:inline-block;font-size:.8rem;font-weight:700;color:var(--ambar);margin-top:.15rem}
+ul.tareas input{appearance:none;-webkit-appearance:none;width:1.65rem;height:1.65rem;border:2px solid var(--tenue);border-radius:50%;margin:0;display:grid;place-content:center;cursor:pointer;background:var(--tarjeta)}
+ul.tareas input::before{content:"";width:.5rem;height:.85rem;border-right:2.5px solid #fff;border-bottom:2.5px solid #fff;transform:rotate(45deg) translate(-1px,-1px);opacity:0}
+ul.tareas input:checked{background:var(--ok);border-color:var(--ok)}
+ul.tareas input:checked::before{opacity:1}
+ul.tareas input:focus-visible{outline:3px solid var(--ambar);outline-offset:2px}
+ul.tareas input:checked ~ .t-cuerpo .t-nombre,ul.tareas li.hecha .t-nombre{text-decoration:line-through;text-decoration-color:var(--tenue);color:var(--tenue)}
+ul.tareas li.pasada .t-cuerpo{opacity:.75}
+
+/* Más */
+details.plegable{background:var(--tarjeta);border:1px solid var(--linea);border-radius:1rem;margin-bottom:.6rem}
+details.plegable > summary{cursor:pointer;padding:.9rem 1rem;font-weight:650;list-style:none;display:flex;align-items:center;gap:.85rem;min-height:3.4rem}
+details.plegable > summary::-webkit-details-marker{display:none}
+details.plegable > summary svg{width:1.35rem;height:1.35rem;color:var(--azul);flex-shrink:0}
+details.plegable > summary .txt{flex:1}
+details.plegable > summary::after{content:"";width:.5rem;height:.5rem;border-right:2px solid var(--tenue);border-bottom:2px solid var(--tenue);transform:rotate(45deg);flex-shrink:0;margin-right:.2rem}
+details.plegable[open] > summary::after{transform:rotate(-135deg)}
+.plegable-cuerpo{padding:0 1rem 1.05rem}
+.plegable-cuerpo ul{margin:0;padding-left:1.15rem}
+.plegable-cuerpo li{margin-bottom:.45rem}
+.plegable-cuerpo h4{margin:.9rem 0 .35rem;font-size:1rem}
+.plegable-cuerpo h4:first-child{margin-top:0}
+.peso{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.8rem;padding:.65rem 0;border-top:1px solid var(--linea)}
+.peso:first-child{border-top:0;padding-top:0}
+.peso .pct{font-family:var(--serif);font-size:1.6rem;font-weight:600;color:var(--azul);line-height:1.1}
+.peso h4{margin:0 0 .2rem;font-size:1rem}
+.peso p{margin:0;font-size:.92rem;color:var(--tenue)}
+.recurso{padding:.7rem 0;border-top:1px solid var(--linea)}
+.recurso:first-child{border-top:0;padding-top:0}
+.acceso{display:inline-block;font-size:.78rem;font-weight:700;border-radius:999px;padding:.05rem .5rem;background:var(--celda);color:var(--tinta);margin-right:.35rem}
+.recurso .uso{font-size:.84rem;color:var(--tenue);font-weight:600}
+.recurso h4{margin:.3rem 0 .15rem;font-size:1rem;line-height:1.35}
+.recurso p{margin:0;font-size:.9rem;color:var(--tenue)}
+.dato{margin:0 0 .55rem}
+.dato b{display:block;font-size:.88rem;color:var(--tenue);font-weight:600}
+
+.boton{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;min-height:2.9rem;padding:.6rem 1.1rem;border-radius:.8rem;font-weight:700;text-decoration:none;border:1.5px solid var(--azul);background:var(--azul);color:#fff;cursor:pointer;font-size:1rem}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .boton:not(.sec){color:#0F131A}}
+:root[data-theme="dark"] .boton:not(.sec){color:#0F131A}
+.boton.sec{background:transparent;color:var(--azul)}
+.boton[hidden]{display:none}
+.fila{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
+.campo{display:grid;gap:.3rem;margin:0 0 .9rem}
+.campo label{font-weight:600;font-size:.95rem}
+.campo input[type=text],.campo textarea{font:inherit;font-size:1rem;padding:.6rem .75rem;border:1.5px solid var(--linea);border-radius:.6rem;background:var(--fondo);color:var(--tinta);width:100%}
+.campo input[type=file]{font:inherit;font-size:.95rem;max-width:100%;width:100%;min-width:0}
+.campo{min-width:0}
+details.plegable{min-width:0;overflow:hidden}
+.estado{font-weight:600;margin:.5rem 0}
+.estado.error{color:#C2412D}
+ul.avisos{margin:0 0 .75rem;padding-left:1.2rem;font-size:.95rem}
+.nota-pie{font-size:.88rem;color:var(--tenue);margin:.75rem 0 0}
+.vista-previa{position:sticky;top:0;z-index:6;background:var(--ambar-fondo);color:var(--tinta);border-bottom:1px solid var(--ambar);text-align:center;font-size:.9rem;font-weight:700;padding:calc(env(safe-area-inset-top,0px) + .45rem) 1rem .45rem}
+
+nav.pestanas{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--tarjeta);border-top:1px solid var(--linea);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.pestanas ul{list-style:none;margin:0 auto;padding:0;display:grid;grid-template-columns:repeat(4,1fr);max-width:40rem}
+nav.pestanas li{min-width:0}
+nav.pestanas a{overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;height:var(--barra);text-decoration:none;color:var(--tenue);font-size:min(.75rem,14px);font-weight:600}
+nav.pestanas .ic{position:relative;display:grid;place-items:center;width:3.6rem;max-width:100%;height:1.9rem;border-radius:999px}
+nav.pestanas svg{width:min(1.4rem,26px);height:min(1.4rem,26px)}
+nav.pestanas .ic{height:min(1.9rem,34px)!important}
+nav.pestanas a[aria-current="page"]{color:var(--tinta)}
+nav.pestanas a[aria-current="page"] .ic{background:var(--celda);color:var(--azul)}
+.ic[data-n]::after{content:attr(data-n);position:absolute;top:-.25rem;right:.45rem;background:var(--ambar);color:#fff;font-size:.62rem;font-weight:800;border-radius:999px;padding:0 .3rem;line-height:1.15rem;min-width:1.15rem;text-align:center}
+</style>
+</head>
+<body>
+<p class="vista-previa" id="aviso-vista" hidden data-p>Vista previa del sílabo cargado. Descargue la app para publicarla.</p>
+<header class="cabecera" data-p>
+  <div class="cab-fila"><h1 id="h-nombre">Curso</h1><p class="codigo" id="h-codigo"></p></div>
+  <div class="avance" id="avance"><span id="avance-txt"></span><span class="avance-barra" aria-hidden="true"><span id="avance-barra"></span></span></div>
+</header>
+
+<main data-p>
+  <section class="vista" id="v-hoy" aria-labelledby="t-hoy">
+    <h2 id="t-hoy" class="oculto">Hoy</h2>
+    <p class="fecha-hoy" id="fecha-hoy"></p>
+    <a class="clase" id="clase" href="#semanas" style="text-decoration:none">
+      <span class="dia" id="clase-dia" aria-hidden="true"><span class="d-sem"></span><span class="d-num"></span><span class="d-mes"></span></span>
+      <span>
+        <p class="rotulo" id="clase-rotulo">Próxima clase</p>
+        <p class="tema" id="clase-tema"></p>
+        <p class="detalle" id="clase-detalle"></p>
+      </span>
+    </a>
+    <a class="entrega" id="entrega" href="#tareas" style="text-decoration:none;color:inherit">
+      <span class="cuenta" id="entrega-cuenta" aria-hidden="true"><span class="n"></span><span class="u"></span></span>
+      <span>
+        <p class="rotulo">Próxima evaluación o trabajo</p>
+        <p class="nombre" id="entrega-nombre"></p>
+        <p class="detalle" id="entrega-detalle"></p>
+      </span>
+    </a>
+
+    <div class="matriz-caja">
+      <div class="matriz-cab"><h2 id="matriz-titulo">Su semestre</h2><span id="matriz-resumen"></span></div>
+      <nav class="matriz" id="matriz-nav" aria-label="Semanas del semestre"><ol id="matriz"></ol></nav>
+      <ul class="leyenda" aria-hidden="true"><li><i class="l-act"></i><span id="ley-act">Esta semana</span></li><li id="ley-ex"><i class="l-ex"></i>Con examen</li><li><i class="l-pas"></i>Terminada</li></ul>
+    </div>
+
+    <h2 class="subtitulo">Accesos</h2>
+    <ul class="lista">
+      <li><a class="fila-enlace" href="#mas" data-abrir="p-recursos"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2zm0 0A1.5 1.5 0 0 0 5.5 21H19"/></svg><span class="txt"><b>Lecturas y recursos</b><small id="acc-recursos"></small></span><span class="flecha" aria-hidden="true"></span></a></li>
+      <li><a class="fila-enlace" href="#mas" data-abrir="p-contacto"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg><span class="txt"><b>Contactar al docente</b><small id="acc-contacto"></small></span><span class="flecha" aria-hidden="true"></span></a></li>
+    </ul>
+  </section>
+
+  <section class="vista" id="v-semanas" aria-labelledby="t-semanas" hidden>
+    <h2 id="t-semanas" class="titulo-vista">Cronograma</h2>
+    <div class="chips" id="chips" role="group" aria-label="Elegir"></div>
+    <div class="sem-cab" aria-live="polite"><h3 id="sem-nombre"></h3><p id="sem-fechas"></p><span class="estado-sem" id="sem-estado" hidden></span></div>
+    <ol class="linea-tiempo" id="sem-sesiones"></ol>
+    <div class="pasos"><button type="button" class="boton sec" id="sem-ant">Anterior</button><button type="button" class="boton sec" id="sem-sig">Siguiente</button></div>
+    <p class="nota-zona">Fechas en hora de Ecuador.</p>
+  </section>
+
+  <section class="vista" id="v-tareas" aria-labelledby="t-tareas" hidden>
+    <h2 id="t-tareas" class="titulo-vista">Mis tareas</h2>
+    <div class="aviso-tareas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg><p><strong>Marcar aquí no entrega la tarea.</strong> Es solo un recordatorio que se guarda en este teléfono y se borra si limpia los datos del navegador. Las entregas se hacen en el aula virtual.</p></div>
+    <p class="resumen" aria-live="polite"><span class="n" id="res-n">0</span><span id="res-txt"></span></p>
+    <div class="barra-prog" aria-hidden="true"><span id="barra"></span></div>
+    <h3 class="subtitulo" id="t-prox" style="margin-top:0">Próximas</h3>
+    <ul class="tareas" id="lista-prox" aria-labelledby="t-prox"></ul>
+    <h3 class="subtitulo" id="t-sin">Sin fecha en el sílabo</h3>
+    <ul class="tareas" id="lista-sin" aria-labelledby="t-sin"></ul>
+    <h3 class="subtitulo" id="t-pas">Fechas pasadas</h3>
+    <ul class="tareas" id="lista-pas" aria-labelledby="t-pas"></ul>
+    <button type="button" class="boton sec" id="reiniciar">Desmarcar todo</button>
+    <p class="nota-zona">Fechas en hora de Ecuador.</p>
+  </section>
+
+  <section class="vista" id="v-mas" aria-labelledby="t-mas" hidden>
+    <h2 id="t-mas" class="titulo-vista">Más</h2>
+    <details class="plegable" id="p-contacto"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg><span class="txt">Contacto y tutorías</span></summary>
+      <div class="plegable-cuerpo">
+        <p class="dato"><b>Docente</b><span id="c-docente"></span></p>
+        <p class="dato"><b>Correo institucional</b><a id="c-correo" href="#"></a></p>
+        <p class="dato"><b>Tutorías</b><span id="c-tutorias"></span></p>
+        <p class="nota-pie" style="margin-top:0">Para dudas de contenido use los foros del aula virtual; la respuesta sirve a todo el grupo.</p>
+        <div class="fila"><a class="boton" id="c-escribir" href="#">Escribir correo</a></div>
+      </div></details>
+    <details class="plegable" id="p-recursos"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2zm0 0A1.5 1.5 0 0 0 5.5 21H19"/></svg><span class="txt">Lecturas y recursos</span></summary><div class="plegable-cuerpo" id="recursos"></div></details>
+    <details class="plegable" id="p-evaluacion"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14M5 7l-2.5 6a3 3 0 0 0 5 0zM19 7l-2.5 6a3 3 0 0 0 5 0z"/></svg><span class="txt">Evaluación</span></summary><div class="plegable-cuerpo" id="evaluacion"></div></details>
+    <details class="plegable" id="p-normas"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.2 7.5 9.5 4.3-1.3 7.5-5 7.5-9.5V6z"/></svg><span class="txt">Normas del curso</span></summary><div class="plegable-cuerpo" id="normas"></div></details>
+    <details class="plegable" id="p-instalar"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg><span class="txt">Instalar en el teléfono</span></summary>
+      <div class="plegable-cuerpo">
+        <p style="margin:0 0 .5rem" id="instalar-texto">En Android (Chrome): menú ⋮ y luego «Instalar aplicación». En iPhone (Safari): botón Compartir y luego «Agregar a inicio».</p>
+        <button type="button" class="boton" id="instalar" hidden>Instalar ahora</button>
+        <p class="nota-pie">Instalada, se abre como una app y funciona sin conexión con la última información descargada.</p>
+      </div></details>
+    <details class="plegable" id="docente"><summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg><span class="txt">Para el docente: actualizar con un sílabo</span></summary>
+      <div class="plegable-cuerpo">
+        <p style="margin:0 0 .75rem">Cargue el sílabo en Word (.docx) con la plantilla institucional. Se lee en este dispositivo y no se envía a ningún servidor. Revise el resultado frente al sílabo aprobado.</p>
+        <div class="campo"><label for="archivo">Sílabo en Word (.docx)</label>
+          <input type="file" id="archivo" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document"></div>
+        <p class="estado" id="estado" role="status" aria-live="polite"></p>
+        <ul class="avisos" id="avisos"></ul>
+        <div class="campo"><label for="f-docente">Nombre del docente como se mostrará</label><input type="text" id="f-docente" autocomplete="off"></div>
+        <div class="campo"><label for="f-tutorias">Horario y lugar de tutorías</label><textarea id="f-tutorias" rows="2"></textarea></div>
+        <div class="fila">
+          <button type="button" class="boton sec" id="aplicar">Aplicar cambios</button>
+          <button type="button" class="boton" id="descargar">Descargar index.html</button>
+          <button type="button" class="boton sec" id="restaurar" hidden>Descartar sílabo cargado</button>
+        </div>
+        <p class="nota-pie">Reemplace index.html en la carpeta de la app de su repositorio de GitHub Pages. Los estudiantes reciben la actualización la próxima vez que abran la app con conexión.</p>
+      </div></details>
+    <p class="nota-pie" id="pie-nota" hidden></p>
+    <p class="nota-pie" id="pie-fuente"></p>
+    <p class="nota-pie">Esta app no recoge datos personales. Calificaciones, entregas y asistencia se gestionan en los sistemas institucionales.</p>
+  </section>
+</main>
+
+<nav class="pestanas" aria-label="Secciones" data-p>
+  <ul>
+    <li><a href="#hoy" data-v="hoy"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10.5 12 4l8.5 6.5V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/></svg></span>Hoy</a></li>
+    <li><a href="#semanas" data-v="semanas"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></span><span id="tab-bloques">Semanas</span></a></li>
+    <li><a href="#tareas" data-v="tareas"><span class="ic" id="insignia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16.5 9.5"/></svg></span>Tareas</a></li>
+    <li><a href="#mas" data-v="mas"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg></span>Más</a></li>
+  </ul>
+</nav>
+
+<script type="application/json" id="datos-curso" data-p>{"curso": {"nombre": "Competencias Humanas para el Futuro", "codigo": "CHF", "periodo": "Septiembre de 2026", "institucion": "UTPL", "docente": "Dra. Cristina Díaz de la Cruz", "correo": "cdiaz@utpl.edu.ec", "tutorias": "Horario por confirmar con el docente.", "nota": "Este sílabo se reconstruyó a partir de las páginas del curso en Canvas (Inicio, Cronograma, Contenidos, Evaluación, Recursos y Perfil docente); los campos que el curso no publica se marcan como pendientes."}, "bloque": "Unidad", "rangoPorDia": true, "unidades": {}, "semanas": [{"n": 1, "sesiones": [{"n": 1, "fecha": "2026-09-08", "sem": 1, "unidad": null, "tema": "Fundamentos del modelo educativo UTPL", "act": "Sesión presencial y taller grupal (no calificado). 09:00 a 12:30, Centro de Convenciones", "examen": false, "nota": "", "trabajos": [], "etiquetas": [{"texto": "Taller formativo, no calificado", "tipo": ""}], "contenidos": ["La misión y el propósito como horizonte", "Fundamentos del modelo educativo", "La antropología y el humanismo integral", "De la antropología a la estrategia", "El rol del docente en este horizonte", "Indicadores de la formación integral", "Invitación a la reflexión"]}]}, {"n": 2, "sesiones": [{"n": 2, "fecha": "2026-09-09", "sem": 2, "unidad": null, "tema": "Competencias humanas para el futuro y la competencia genérica UTPL Desarrollo Personal Integral (DPI)", "act": "Sesión presencial y taller grupal (no calificado). 09:00 a 12:30, Centro de Convenciones", "examen": false, "nota": "", "trabajos": [], "etiquetas": [{"texto": "Taller formativo, no calificado", "tipo": ""}], "contenidos": ["Competencias humanas y modelo educativo", "Habilidades blandas y competencias genéricas de la UTPL", "La DPI y su relación con marcos internacionales (UNESCO, Foro Económico Mundial, OCDE, Tuning)", "Resultados de aprendizaje de la asignatura", "El proyecto de desarrollo personal", "La relación entre modelo educativo y asignatura", "Invitación a la reflexión"]}]}, {"n": 3, "sesiones": [{"n": 3, "fecha": "2026-09-10", "sem": 3, "unidad": null, "tema": "Estrategias docentes para desarrollar competencias humanas y genéricas", "act": "Sesión presencial y taller de construcción de rúbricas (calificado). 09:00 a 12:30, Centro de Convenciones", "examen": false, "nota": "", "trabajos": [], "etiquetas": [{"texto": "Taller de construcción de rúbricas, 20%", "tipo": "evalua"}], "contenidos": ["El marco de competencias UTPL", "La taxonomía UTPL como progresión del aprendizaje", "Las rúbricas institucionales", "Metodologías activas y evidencias de aprendizaje", "Estrategias y actividades para integrar competencias genéricas en el aula", "Camino hacia el microproyecto docente integrador"]}]}, {"n": 4, "sesiones": [{"n": 4, "fecha": "2026-09-12", "sem": 4, "unidad": null, "tema": "Diseño de una propuesta docente integradora", "act": "Sesión presencial y entrega del microproyecto (individual, calificado). 15:00 a 18:00, Centro de Convenciones / EVA", "examen": false, "nota": "", "trabajos": [], "etiquetas": [{"texto": "Microproyecto docente integrador, 40%", "tipo": "evalua"}], "contenidos": ["Objetivo de la unidad", "El microproyecto docente integrador", "La importancia de la transversalidad", "Actividad calificada de la unidad", "Criterios de evaluación del microproyecto", "Invitación final a la reflexión"]}]}], "entregas": [{"id": "e0", "nombre": "Taller de construcción de rúbricas", "detalle": "20%", "sem": 3, "fecha": "2026-09-10", "tipo": "sesion"}, {"id": "e1", "nombre": "Microproyecto docente integrador", "detalle": "40%", "sem": 4, "fecha": "2026-09-12", "tipo": "sesion"}, {"id": "e2", "nombre": "Examen teórico sobre fundamentos, competencias y modelo educativo UTPL", "detalle": "20%", "sem": null, "fecha": null, "tipo": "sinfecha"}, {"id": "e3", "nombre": "Foro sobre competencias genéricas en el currículo", "detalle": "20%", "sem": null, "fecha": null, "tipo": "sinfecha"}], "evaluacion": [{"nombre": "Microproyecto docente integrador (Unidad 4)", "pct": "40%", "items": ["Individual"]}, {"nombre": "Examen teórico sobre fundamentos, competencias y modelo educativo UTPL", "pct": "20%", "items": ["Individual"]}, {"nombre": "Foro sobre competencias genéricas en el currículo", "pct": "20%", "items": ["Individual"]}, {"nombre": "Taller de construcción de rúbricas (Unidad 3)", "pct": "20%", "items": ["Grupal"]}], "detallesEvaluacion": [{"titulo": "Microproyecto", "intro": "Propuesta breve (5–8 páginas o presentación equivalente) que se sube al EVA y se presenta a compañeros en la sesión final. Incluye:", "items": ["Contexto de la asignatura y su aporte a los perfiles profesional y de egreso.", "Resultado de aprendizaje seleccionado del plan docente.", "Competencia genérica elegida.", "Actividad integradora (componente específico y genérico).", "Metodología activa aplicada y su justificación.", "Evidencias esperadas del estudiante.", "Rúbrica o instrumento de evaluación y forma de retroalimentación."]}, {"titulo": "Criterios de evaluación del microproyecto", "intro": "", "items": ["Claridad en la articulación entre el resultado de aprendizaje y la competencia genérica.", "Pertinencia y coherencia de la metodología activa.", "Calidad de la actividad integradora (realista, motivadora, alineada al modelo UTPL) y de las evidencias.", "Solidez y aplicabilidad de la rúbrica o instrumento.", "Reflexión sobre transversalidad y progresividad de las competencias.", "Inclusión de conocimientos, habilidades, actitudes y valores (C-H-A-V) y un criterio integrador.", "Integración de teoría, práctica, interacción y significado."]}], "recursos": [{"titulo": "Páginas del curso en Canvas UTPL", "url": "https://utpl.instructure.com/courses/78823/pages/inicio", "ref": "", "uso": "Todo el curso", "acceso": "En el EVA"}], "libros": [{"ref": "Ríelo, F. Concepción mística de la antropología (lectura recomendada para el pensamiento de Fernando Rielo)", "detalle": "", "acceso": "En el EVA"}, {"ref": "Diccionario / glosario avanzado del pensamiento de Fernando Rielo", "detalle": "", "acceso": "En el EVA"}, {"ref": "Guía del curso CHF (versión actualizada)", "detalle": "", "acceso": "En el EVA"}, {"ref": "NotebookLM del Modelo Educativo UTPL (en construcción)", "detalle": "", "acceso": "En el EVA"}, {"ref": "Casos prácticos (PDF)", "detalle": "Unidad 3", "acceso": "En el EVA"}, {"ref": "Carpeta compartida con todos los recursos del curso", "detalle": "", "acceso": "En el EVA"}, {"ref": "Marcos de referencia citados en la Unidad 2: UNESCO (aprendizaje transformador), Foro Económico Mundial (competencias humanas en la era tecnológica), OCDE (competencias transformativas) y Proyecto Tuning (competencias genéricas)", "detalle": "Unidad 2", "acceso": "Referencia"}], "normas": []}</script>
+<script data-p>
+/* Lector de sílabos (plantilla UTE). Recibe el HTML que produce mammoth. */
+function leerSilabo(html, DP){
+  var doc = new DP().parseFromString("<body>"+html+"</body>","text/html");
+  var MESES={enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12};
+  var avisos=[];
+  function limpio(s){return (s||"").replace(/[\u00a0\t]/g," ").replace(/\s+/g," ").trim();}
+  function txt(el){return limpio(el?el.textContent:"");}
+  function partes(el){
+    var hojas=[].slice.call(el.querySelectorAll("p, li")).filter(function(n){return !n.querySelector("p, li");});
+    var r=hojas.map(txt).filter(Boolean);
+    return r.length?r:(txt(el)?[txt(el)]:[]);
+  }
+  function oracion(s){ if(s===s.toUpperCase() && /[A-ZÁÉÍÓÚÑ]{3}/.test(s)){ s=s.toLowerCase(); } return s.charAt(0).toUpperCase()+s.slice(1); }
+  function celdas(tr){return [].slice.call(tr.children).filter(function(c){return /^T[DH]$/.test(c.tagName);});}
+  function iso(y,m,d){return y+"-"+String(m).padStart(2,"0")+"-"+String(d).padStart(2,"0");}
+  function fechaDe(s){var m=/(\d{1,2})\s+de\s+([a-záéíóú]+)\s+(?:de|del)\s+(\d{4})/i.exec(s); if(!m) return null; var mm=MESES[m[2].toLowerCase()]; return mm?iso(+m[3],mm,+m[1]):null;}
+  var tablas=[].slice.call(doc.querySelectorAll("table"));
+  var todo=partes(doc.body).join(" ");
+
+  // ---- Información general ----
+  var curso={nombre:"",codigo:"",periodo:"",institucion:"",docente:"",correo:"",tutorias:"Horario por confirmar con el docente."};
+  doc.querySelectorAll("td").forEach(function(td){
+    if(td.querySelector("table")) return;
+    var t=txt(td), p=partes(td);
+    if(/^Asignatura\s*\/\s*M[óo]dulo\s*:/i.test(t)&&!curso.nombre) curso.nombre=limpio(t.replace(/^Asignatura\s*\/\s*M[óo]dulo\s*:/i,""));
+    else if(/^C[óo]digo de asignatura/i.test(t)&&!curso.codigo) curso.codigo=limpio(p[p.length-1].replace(/^C[óo]digo.*?:/i,""));
+    else if(/^Periodo Acad[ée]mico\s*:/i.test(t)&&!curso.periodo) curso.periodo=limpio(p.join(" ").replace(/^Periodo Acad[ée]mico\s*:/i,""));
+    else if(/^Docente\s*:/i.test(t)&&!curso.docente) curso.docente=limpio(t.replace(/^Docente\s*:/i,""));
+  });
+  var mc=/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.exec(todo); if(mc) curso.correo=mc[0];
+  var mi=/Universidad\s+UTE/i.exec(todo); if(mi) curso.institucion="Universidad UTE";
+  // RAA definidos frente a los usados en la planificación
+  var definidos={};
+  tablas.forEach(function(t){ if(/Resultados de aprendizaje/i.test(t.textContent) && !/Sesi[óo]n\s*:?\s*N/i.test(t.textContent)) (t.textContent.match(/R[RA]A\s*\d+/gi)||[]).forEach(function(x){definidos[+/(\d+)/.exec(x)[1]]=1;}); });
+  if(!curso.nombre) avisos.push("No se encontró el nombre de la asignatura.");
+  if(!curso.correo) avisos.push("No se encontró el correo del docente.");
+
+  // ---- Planificación por sesión ----
+  var plan=null, max=0;
+  tablas.forEach(function(t){var n=(t.textContent.match(/Sesi[óo]n\s*:?\s*N/gi)||[]).length; if(n>max){max=n;plan=t;}});
+  var unidades={}, semanas=[], sesiones=[];
+  if(!plan){ avisos.push("No se encontró la tabla de planificación por sesión."); }
+  else {
+    var filas=[].slice.call(plan.querySelectorAll("tr")).filter(function(tr){return tr.closest("table")===plan;});
+    var idx={cont:1,ses:2,act:4,crit:5};
+    for(var i=0;i<filas.length;i++){var hc=celdas(filas[i]).map(txt); if(hc.some(function(h){return /^Actividad/i.test(h);})){
+      hc.forEach(function(h,k){ if(/^Contenido/i.test(h)) idx.cont=k; else if(/^Sesi[óo]n/i.test(h)) idx.ses=k; else if(/^Actividad/i.test(h)) idx.act=k; else if(/^Criterio/i.test(h)) idx.crit=k; }); break; }}
+    var semActual=null, unidadActual=null;
+    filas.forEach(function(tr){
+      var cs=celdas(tr);
+      if(cs.length===1){ var m=/^SEMANA\s*(\d+)/i.exec(txt(cs[0])); if(m){ semActual={n:+m[1],sesiones:[]}; semanas.push(semActual);} return; }
+      if(cs.length<=idx.ses) return;
+      var sesTxt=txt(cs[idx.ses]); var mn=/Sesi[óo]n\s*:?\s*N[o°º]?\.?\s*(\d+)/i.exec(sesTxt); if(!mn) return;
+      var fecha=fechaDe(sesTxt);
+      var cont=partes(cs[idx.cont]), tema=[], uni=null;
+      cont.forEach(function(p){ var mu=/^UNIDAD\s*(\d+)\s*[:.\-–]\s*(.+)$/i.exec(p);
+        if(mu){ uni=+mu[1]; unidades[uni]=oracion(limpio(mu[2])).replace(/\.$/,""); }
+        else { var c=limpio(p.replace(/^[\d.]+\s*[-.)–]*\s*/,"").replace(/^[-–•]\s*/,"").replace(/\s+[-–]\s+/g,", ")).replace(/[.,;]+$/,""); if(c) tema.push(oracion(c)); } });
+      if(uni) unidadActual=uni;
+      var temaTxt=tema.join(". ");
+      var examen=/^evaluaci[óo]n\s+(parcial|final|remedial)/i.test(temaTxt);
+      var actP=cs[idx.act]?partes(cs[idx.act]):[], actAll=actP.join(" "), critAll=cs[idx.crit]?txt(cs[idx.crit]):"";
+      var act="";
+      if(examen){ act=/te[óo]rico\s+y\s+pr[áa]ctico/i.test(actAll)?"Examen teórico y práctico":"Examen"; if(/IANP/.test(actAll)) act+=". Sin uso de IA"; }
+      else {
+        var lab=/^(ACD|AA)\s*(\([^)]*\))?\s*:\s*/i, k=-1;
+        for(var j=0;j<actP.length;j++){ if(/^ACD/i.test(actP[j])){k=j;break;} }
+        var base=k>=0?actP[k].replace(lab,""):(actP[0]||"").replace(lab,"");
+        if(!base && k>=0 && actP[k+1]) base=actP[k+1].replace(lab,"");
+        base=limpio(base).replace(/[.,;:]+$/,"");
+        if(base.length>110){ base=base.slice(0,107).replace(/\s+\S*$/,"")+"…"; }
+        act=oracion(base||"");
+      }
+      var trab=[], vistos={};
+      (critAll.match(/Trabajo\s*N(?:ro|°|º|o)?\.?\s*(\d+)/gi)||[]).forEach(function(s){var n=+/(\d+)/.exec(s)[1]; if(!vistos[n]){vistos[n]=1;trab.push({n:n,tipo:"evalua"});}});
+      (actAll.match(/Trabajo\s*N(?:ro|°|º|o)?\.?\s*(\d+)/gi)||[]).forEach(function(s){var n=+/(\d+)/.exec(s)[1]; if(!vistos[n]){vistos[n]=1;trab.push({n:n,tipo:"asigna"});}});
+      if(!semActual){ semActual={n:semanas.length+1,sesiones:[]}; semanas.push(semActual); }
+      var s={n:+mn[1],fecha:fecha,sem:semActual.n,unidad:uni,tema:temaTxt||"Sesión "+mn[1],act:act,examen:examen,nota:/recuperar/i.test(sesTxt)?"Sesión a recuperar":"",trabajos:trab,raw:(actAll+" "+critAll)};
+      semActual.sesiones.push(s); sesiones.push(s);
+      if(!fecha) avisos.push("La sesión "+s.n+" no tiene una fecha reconocible.");
+    });
+    var usados={};
+    filas.forEach(function(tr){ var c=celdas(tr); if(c.length>1) (txt(c[0]).match(/R[RA]A\s*\d+/gi)||[]).forEach(function(x){usados[+/(\d+)/.exec(x)[1]]=1;}); });
+    if(Object.keys(definidos).length) Object.keys(usados).forEach(function(n){ if(!definidos[n]) avisos.push("La planificación menciona RAA"+n+", que no aparece entre los resultados de aprendizaje."); });
+    semanas=semanas.filter(function(w){ if(!w.sesiones.length){avisos.push("La semana "+w.n+" no tiene sesiones."); return false;} return true; });
+  }
+
+  // ---- Trabajos y exámenes para la lista ----
+  var trabajos={};
+  sesiones.forEach(function(s){ s.trabajos.forEach(function(t){ var r=trabajos[t.n]||(trabajos[t.n]={n:t.n}); if(t.tipo==="evalua"&&!r.eval) r.eval=s; if(t.tipo==="asigna"&&!r.asig) r.asig=s; }); });
+  var entregas=[];
+  Object.keys(trabajos).forEach(function(k){ var t=trabajos[k], s=t.eval||t.asig; if(!t.eval) avisos.push("El Trabajo "+t.n+" no indica cuándo se evalúa; se usa la fecha en que se asigna.");
+    entregas.push({id:"t"+t.n,nombre:"Trabajo "+t.n,sem:s.sem,fecha:s.fecha,tipo:t.eval?"evalua":"asigna"}); });
+  sesiones.forEach(function(s){ if(s.examen && !/remedial/i.test(s.tema)) entregas.push({id:"e"+s.n,nombre:s.tema,sem:s.sem,fecha:s.fecha,tipo:"examen"}); });
+  entregas=entregas.filter(function(e){return e.fecha;}).sort(function(a,b){return a.fecha<b.fecha?-1:a.fecha>b.fecha?1:0;});
+
+  // ---- Evaluación ----
+  var evaluacion=[];
+  tablas.forEach(function(t){
+    if(!/Ponderaci[óo]n/i.test(t.textContent)) return;
+    var fs=[].slice.call(t.querySelectorAll("tr")), h=celdas(fs[0]).map(txt), ip=-1, ig=-1, ia=-1;
+    h.forEach(function(x,k){ if(/^Per[íi]odo/i.test(x)) ip=k; if(/Ponderaci[óo]n/i.test(x)) ig=k; if(/^Actividades/i.test(x)) ia=k; });
+    if(ip<0||ig<0) return;
+    fs.slice(1).forEach(function(tr){ var c=celdas(tr).map(txt); var off=Math.max(0,h.length-c.length); if(c.length<=ig-off) return; var nom=c[ip-off]||"", pct=c[ig-off]||""; if(!nom||!/\d/.test(pct)||/total/i.test(nom)) return;
+      var items=((ia>=0?(c[ia-off]||""):"").match(/[^()]+?\(\s*\d+\s*%\s*\)/g)||[]).map(function(x){return limpio(x).replace(/\s*\(\s*(\d+)\s*%\s*\)/," $1%");});
+      evaluacion.push({nombre:nom,pct:limpio(pct).replace(/\s+/g,""),items:items}); });
+  });
+  if(!evaluacion.length) avisos.push("No se encontró la tabla de evaluación.");
+
+  // ---- Bibliografía y recursos ----
+  var recursos=[], libros=[];
+  function usoDe(claves){ for(var i=0;i<sesiones.length;i++){ var r=sesiones[i].raw; for(var j=0;j<claves.length;j++){ if(claves[j]&&r.indexOf(claves[j])>=0) return "Semana "+sesiones[i].sem+" · Sesión "+sesiones[i].n; } } return "Todo el curso"; }
+  tablas.forEach(function(t){
+    var fs=[].slice.call(t.querySelectorAll("tr")); if(!fs.length||!/Referencia Bibliogr/i.test(txt(fs[0]))) return;
+    fs.slice(1).forEach(function(tr){ var c=celdas(tr); if(!c.length) return; var ref=txt(c[0]); if(!ref) return;
+      var a=tr.querySelector("a[href^='http']"), tipo=c[1]?txt(c[1]):"", ult=txt(c[c.length-1]);
+      var mt=/\)\.\s*(.+?)(?:\.\s|\.$|$)/.exec(ref), titulo=mt?limpio(mt[1]):ref;
+      if(a){ var dois=(ref.match(/10\.\d{4,}\/[^\s]+/g)||[]).map(function(d){return d.replace(/[.,]$/,"");});
+        recursos.push({titulo:titulo,url:a.getAttribute("href"),ref:ref,uso:usoDe(dois.concat([a.getAttribute("href")]))}); }
+      else libros.push({ref:ref,detalle:[oracion(tipo.toLowerCase()), /^\S+$/.test(ult)&&ult!==tipo?"Código "+ult:""].filter(Boolean).join(" · ")});
+    });
+  });
+
+  // ---- Normas (comportamiento ético) ----
+  var normas=[], dentro=false, grupo=null;
+  [].slice.call(doc.body.children).forEach(function(el){
+    var t=txt(el);
+    if(/COMPORTAMIENTO\s+[ÉE]TICO/i.test(t)&&el.tagName!=="TABLE"){dentro=true;return;}
+    if(dentro&&/RECURSOS\s+PARA\s+EL\s+APRENDIZAJE/i.test(t)){dentro=false;return;}
+    if(!dentro) return;
+    var mg=/^[A-Z]\.\s*(.+)$/.exec(t);
+    if(el.tagName==="P"&&mg){ grupo={titulo:oracion(limpio(mg[1])),items:[]}; normas.push(grupo); return; }
+    if(/^(UL|OL)$/.test(el.tagName)){ if(!grupo){grupo={titulo:"Normas",items:[]};normas.push(grupo);} partes(el).forEach(function(x){ if(x.length>3) grupo.items.push(x.replace(/\s*\[\^?\d+\]\s*$/,"")); }); }
+  });
+  normas=normas.filter(function(g){return g.items.length;});
+
+  sesiones.forEach(function(s){delete s.raw;});
+  return {curso:curso,unidades:unidades,semanas:semanas,entregas:entregas,evaluacion:evaluacion,recursos:recursos,libros:libros,normas:normas,avisos:avisos};
+}
+if(typeof module!=="undefined") module.exports=leerSilabo;
+
+/* Segundo formato: sílabo con secciones (Datos informativos, Contenidos, Evaluación, Cronograma por fecha, Recursos). */
+function leerSilaboSimple(html, DP){
+  var doc=new DP().parseFromString("<body>"+html+"</body>","text/html");
+  var MESES={ene:1,feb:2,mar:3,abr:4,may:5,jun:6,jul:7,ago:8,sep:9,set:9,oct:10,nov:11,dic:12};
+  var avisos=[];
+  function limpio(s){return (s||"").replace(/[\u00a0\t]/g," ").replace(/\s+/g," ").trim();}
+  function txt(e){return limpio(e?e.textContent:"");}
+  function oracion(s){return s?s.charAt(0).toUpperCase()+s.slice(1):s;}
+  function hojasLi(el,nodos){ var r=[].slice.call(el.querySelectorAll("li")).filter(function(li){return !li.querySelector("li");}); return nodos?r:r.map(txt).filter(Boolean); }
+  function filas(t){return [].slice.call(t.querySelectorAll("tr")).map(function(tr){return [].slice.call(tr.children).map(txt);});}
+  // Secciones por encabezado h1/h2/ol>li
+  var hijos=[].slice.call(doc.body.children);
+  function seccion(re){ var dentro=false, out=[]; hijos.forEach(function(el){ var t=txt(el), esTit=/^H1$/.test(el.tagName)||(el.tagName==="OL"&&el.children.length===1&&t.length<60);
+      if(esTit){ dentro=re.test(t); return; } if(dentro) out.push(el); }); return out; }
+  var tablas=[].slice.call(doc.querySelectorAll("table"));
+  var todo=txt(doc.body);
+
+  // Datos informativos
+  var curso={nombre:"",codigo:"",periodo:"",institucion:"",docente:"",correo:"",tutorias:"Horario por confirmar con el docente.",nota:""};
+  tablas.forEach(function(t){ var f=filas(t); if(!f.length||!/^Campo/i.test(f[0][0]||"")) return;
+    f.slice(1).forEach(function(r){ var k=(r[0]||"").toLowerCase(), v=r[1]||"";
+      if(/^curso|asignatura/.test(k)){ var m=/^(.*?)\s*\(([^)]+)\)\s*$/.exec(v); curso.nombre=m?m[1]:v; if(m) curso.codigo=m[2]; }
+      else if(/instituci/.test(k)){ var mi=/\(([^)]+)\)/.exec(v); curso.institucion=mi?mi[1]:v; }
+      else if(/docente/.test(k)){ curso.docente=limpio(v.split(/\s+[—–-]\s+/)[0].replace(/\(?[\w.+-]+@[\w.-]+\)?/,"")); } }); });
+  var mc=/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.exec(todo); if(mc) curso.correo=mc[0];
+  hijos.some(function(el){ if(el.tagName==="H1") return true; var t=txt(el); if(el.tagName==="P"&&t.length>60){ curso.nota=t; return true; } return false; });
+
+  // Contenidos por unidad
+  var unidades={}, contenidos={};
+  seccion(/^Contenidos/i).forEach(function(el,i,arr){ var t=txt(el), m=/^Unidad\s*(\d+)\s*[.:\-–]\s*(.+)$/i.exec(t);
+    if(m){ unidades[+m[1]]=limpio(m[2]); var sig=arr[i+1]; if(sig&&/^(UL|OL)$/.test(sig.tagName)) contenidos[+m[1]]=hojasLi(sig); } });
+
+  // Año
+  var anio=null, crono=seccion(/^Cronograma/i), ctexto=crono.map(txt).join(" ");
+  var ma=/\b(20\d\d)\b/.exec(ctexto)||/Duraci[óo]n[^.]*?\b(20\d\d)\b/.exec(todo);
+  if(ma) anio=+ma[1]; else { var md=/\b(20\d\d)\b/.exec(todo); anio=md?+md[1]:new Date().getFullYear(); avisos.push("El cronograma no indica el año; se usó "+anio+". Verifíquelo antes de publicar."); }
+
+  // Cronograma: filas partidas se unen
+  var sesiones=[], ct=null;
+  tablas.forEach(function(t){ var f=filas(t); if(f.length&&/^Fecha/i.test(f[0][0]||"")&&f[0].some(function(h){return /^Actividad/i.test(h);})) ct={t:t,f:f}; });
+  if(!ct){ return {semanas:[],avisos:["No se encontró el cronograma."]}; }
+  var h=ct.f[0].map(function(x){return x.toLowerCase();}), iU=h.findIndex(function(x){return /unidad|tema/.test(x);}), iA=h.findIndex(function(x){return /actividad/.test(x);}), iH=h.findIndex(function(x){return /horario|hora/.test(x);}), iL=h.findIndex(function(x){return /lugar/.test(x);});
+  var actual=null;
+  ct.f.slice(1).forEach(function(r){ var c0=r[0]||"";
+    if(/^\d{1,2}\b/.test(c0)){ actual={fecha:[c0],u:[],a:[],h:[],l:[]}; sesiones.push(actual); }
+    else if(actual&&c0) actual.fecha.push(c0);
+    if(!actual) return;
+    if(iU>=0&&r[iU]) actual.u.push(r[iU]); if(iA>=0&&r[iA]) actual.a.push(r[iA]); if(iH>=0&&r[iH]) actual.h.push(r[iH]); if(iL>=0&&r[iL]) actual.l.push(r[iL]); });
+
+  // Evaluación
+  var evaluacion=[], evalFilas=[];
+  tablas.forEach(function(t){ var f=filas(t); if(!f.length||!/^Actividad/i.test(f[0][0]||"")) return; var ip=f[0].findIndex(function(x){return /peso|ponderaci/i.test(x);}), it=f[0].findIndex(function(x){return /^tipo/i.test(x);}); if(ip<0) return;
+    f.slice(1).forEach(function(r){ if(!r[0]) return; evalFilas.push({nombre:r[0],pct:limpio(r[ip]).replace(/\s+/g,""),tipo:it>=0?r[it]:""}); }); });
+  var detalles=[], secE=seccion(/^Evaluaci/i);
+  secE.forEach(function(el,i){ if(!/^(UL|OL)$/.test(el.tagName)) return; var prev=secE[i-1]; if(!prev||/^(UL|OL|TABLE)$/.test(prev.tagName)) return;
+    var t=txt(prev).replace(/:$/,""), m=/^([^.]{3,40})\.\s+(.+)$/.exec(t);
+    var intro=m?m[2]:""; if(intro&&!/[.:;]$/.test(intro)) intro+=":";
+    detalles.push({titulo:m?m[1]:t,intro:intro,items:hojasLi(el)}); });
+  evalFilas.forEach(function(e){ evaluacion.push({nombre:e.nombre,pct:e.pct,items:e.tipo?[e.tipo]:[]}); });
+
+  // Sesiones → bloques
+  var semanas=[], entregas=[];
+  sesiones.forEach(function(s,i){
+    var f=s.fecha.join(" "), m=/(\d{1,2})\s*(?:de\s+)?([a-záéíóú]{3})/i.exec(f), fecha=null;
+    if(m&&MESES[m[2].toLowerCase()]) fecha=anio+"-"+String(MESES[m[2].toLowerCase()]).padStart(2,"0")+"-"+String(+m[1]).padStart(2,"0");
+    else avisos.push("La sesión "+(i+1)+" no tiene una fecha reconocible.");
+    var ut=s.u.join(" "), mu=/^(\d+)\s*[.:\-–]\s*(.*)$/.exec(ut), un=mu?+mu[1]:i+1;
+    var tema=unidades[un]||limpio(mu?mu[2]:ut);
+    var act=limpio(s.a.join(" ")).replace(/\s*\+\s*/g," y ");
+    var hora=limpio(s.h.join(" ")).replace(/\s*[–-]\s*/," a "), lugar=limpio(s.l.join(" "));
+    var etiquetas=[], baja=act.toLowerCase();
+    evalFilas.forEach(function(e){ var claves=e.nombre.toLowerCase().replace(/\([^)]*\)/g,"").split(/[^a-záéíóúñ]+/).filter(function(w){return w.length>=8;});
+      if(claves.some(function(w){return baja.indexOf(w)>=0;})){ etiquetas.push({texto:e.nombre.replace(/\s*\([^)]*\)/,"")+", "+e.pct,tipo:"evalua"});
+        entregas.push({id:"e"+entregas.length,nombre:e.nombre.replace(/\s*\([^)]*\)/,""),detalle:e.pct,sem:un,fecha:fecha,tipo:"sesion"}); e.usada=true; } });
+    if(/no calificado/i.test(act)) etiquetas.push({texto:"Taller formativo, no calificado",tipo:""});
+    var ses={n:i+1,fecha:fecha,sem:un,unidad:null,tema:tema,act:act+(hora||lugar?". "+[hora,lugar].filter(Boolean).join(", "):""),examen:/examen/i.test(act),nota:"",trabajos:[],etiquetas:etiquetas,contenidos:contenidos[un]||[]};
+    semanas.push({n:un,sesiones:[ses]});
+  });
+  evalFilas.forEach(function(e){ if(!e.usada){ entregas.push({id:"e"+entregas.length,nombre:e.nombre.replace(/\s*\([^)]*\)/,""),detalle:e.pct,sem:null,fecha:null,tipo:"sinfecha"}); avisos.push("«"+e.nombre+"» no tiene fecha en el cronograma."); } });
+  entregas.sort(function(a,b){ if(!a.fecha) return 1; if(!b.fecha) return -1; return a.fecha<b.fecha?-1:1; });
+  var meses=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  var fs=sesiones.length&&semanas[0].sesiones[0].fecha; if(fs) curso.periodo=oracion(meses[+fs.slice(5,7)-1])+" de "+fs.slice(0,4);
+
+  // Recursos
+  var recursos=[], libros=[], secR=seccion(/^Recursos/i), intro=secR.filter(function(e){return e.tagName==="P";}).map(txt).join(" ");
+  var accesoBase=/\bEVA\b|aula virtual|Canvas|Moodle/i.test(intro)?"En el EVA":"Biblioteca";
+  secR.forEach(function(el){
+    if(/^(UL|OL)$/.test(el.tagName)) hojasLi(el,true).forEach(function(li){ var t=txt(li).replace(/\.$/,""), mu=/^Unidad\s*(\d+)\s*:\s*(.+)$/i.exec(t), mr=/^Marcos de referencia citados en la Unidad\s*(\d+)/i.exec(t);
+      libros.push({ref:mu?mu[2]:t,detalle:mu?"Unidad "+mu[1]:(mr?"Unidad "+mr[1]:""),acceso:mr?"Referencia":accesoBase}); });
+    else el.querySelectorAll("a[href^='http']").forEach(function(a){ var u=a.getAttribute("href"); recursos.push({titulo:oracion(txt(a)),url:u,ref:"",uso:"Todo el curso",acceso:/instructure|canvas|moodle|brightspace/i.test(u)?"En el EVA":"En línea"}); });
+  });
+  return {curso:curso,bloque:"Unidad",rangoPorDia:true,unidades:{},semanas:semanas,entregas:entregas,evaluacion:evaluacion,detallesEvaluacion:detalles,recursos:recursos,libros:libros,normas:[],avisos:avisos};
+}
+if(typeof module!=="undefined") module.exports=leerSilaboSimple;
+
+</script>
+<script data-p>
+(function(){
+  var PLANTILLA="<!DOCTYPE html>\n"+document.documentElement.outerHTML;
+  var ORIGINAL=JSON.parse(document.getElementById("datos-curso").textContent);
+  var D=JSON.parse(JSON.stringify(ORIGINAL));
+  var MES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  var DIA=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+  function $(id){return document.getElementById(id);}
+  function el(tag,cls,texto){var e=document.createElement(tag); if(cls) e.className=cls; if(texto!=null) e.textContent=texto; return e;}
+  function aFecha(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2]);}
+  function larga(d,anio){return DIA[d.getDay()]+" "+d.getDate()+" de "+MES[d.getMonth()]+(anio?" de "+d.getFullYear():"");}
+  function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+  function dias(d){return Math.round((d-hoy)/86400000);}
+  function faltan(d){var n=dias(d);return n===0?"hoy":n===1?"mañana":"en "+n+" días";}
+  function lunes(d){var x=new Date(d); x.setDate(x.getDate()-((x.getDay()+6)%7)); return x;}
+  function bloqueDia(cont,d){var s=cont.children; s[0].textContent=DIA[d.getDay()].slice(0,3); s[1].textContent=d.getDate(); s[2].textContent=MES[d.getMonth()].slice(0,3);}
+  var hoy=new Date(); hoy.setHours(0,0,0,0);
+  var semElegida=null;
+  function B(){return D.bloque||"Semana";}
+  function BP(){return B()==="Unidad"?"Unidades":"Semanas";}
+  function esSemana(){return B()==="Semana";}
+
+  function sesiones(){var r=[]; D.semanas.forEach(function(w){w.sesiones.forEach(function(s){r.push(s);});}); return r;}
+  function rango(w){var fs=w.sesiones.map(function(s){return s.fecha;}).filter(Boolean).sort(); if(!fs.length) return null;
+    var d0=aFecha(fs[0]), d1=aFecha(fs[fs.length-1]); if(D.rangoPorDia) return {d0:d0,d1:d1,ini:d0,fin:d1};
+    var fin=lunes(d1); fin.setDate(fin.getDate()+6); return {d0:d0,d1:d1,ini:lunes(d0),fin:fin};}
+  function estadoSemana(w){var r=rango(w); if(!r) return ""; if(hoy>=r.ini&&hoy<=r.fin) return "actual"; if(hoy>r.fin) return "pasada"; return "";}
+  function semanaPorDefecto(){
+    for(var i=0;i<D.semanas.length;i++){ var r=rango(D.semanas[i]); if(r && hoy<=r.fin) return D.semanas[i].n; }
+    return D.semanas.length?D.semanas[D.semanas.length-1].n:null;
+  }
+  function textoRango(r){ if(!r) return ""; var a=r.d0, b=r.d1;
+    if(+a===+b) return cap(larga(a,true));
+    if(a.getMonth()===b.getMonth()) return "Del "+a.getDate()+" al "+b.getDate()+" de "+MES[b.getMonth()]+" de "+b.getFullYear();
+    return "Del "+a.getDate()+" de "+MES[a.getMonth()]+" al "+b.getDate()+" de "+MES[b.getMonth()]+" de "+b.getFullYear(); }
+
+  function render(){
+    var c=D.curso, ses=sesiones();
+    document.title=c.nombre||"Curso";
+    $("h-nombre").textContent=c.nombre||"Curso";
+    $("h-codigo").textContent=[c.codigo,c.periodo?c.periodo.replace(/\s*\(.*\)\s*/,""):""].filter(Boolean).join(", ");
+    $("fecha-hoy").textContent=cap(larga(hoy,true));
+    $("pie-fuente").textContent="Basado en el sílabo"+(c.codigo?" de "+c.codigo:"")+(c.periodo?", periodo "+c.periodo:"")+". Si algo no coincide con el sílabo, avise al docente; el sílabo prevalece.";
+
+    // Avance del semestre
+    var total=D.semanas.length, idxAct=-1, primero=ses.filter(function(s){return s.fecha;})[0];
+    D.semanas.forEach(function(w,i){ if(estadoSemana(w)==="actual") idxAct=i; });
+    var pasadas=D.semanas.filter(function(w){return estadoSemana(w)==="pasada";}).length;
+    var txt, pct;
+    if(idxAct>=0){ txt=B()+" "+D.semanas[idxAct].n+" de "+total; pct=100*(idxAct+.5)/total; }
+    else if(pasadas===total&&total){ txt=esSemana()?"Periodo terminado":"Curso terminado"; pct=100; }
+    else if(primero&&aFecha(primero.fecha)>hoy&&pasadas===0){ txt="Inicia "+faltan(lunes(aFecha(primero.fecha))>hoy?aFecha(primero.fecha):aFecha(primero.fecha)); pct=0; }
+    else { txt=pasadas+" de "+total+" "+BP().toLowerCase(); pct=100*pasadas/total; }
+    $("avance-txt").textContent=txt; $("avance-barra").style.width=pct+"%";
+
+    // Próxima clase
+    var clase=null; for(var i=0;i<ses.length;i++){ if(ses[i].fecha&&aFecha(ses[i].fecha)>=hoy){clase=ses[i];break;} }
+    if(clase){ var dc=aFecha(clase.fecha); bloqueDia($("clase-dia"),dc); $("clase-dia").hidden=false;
+      $("clase-rotulo").textContent="Próxima clase, "+faltan(dc); $("clase-tema").textContent=clase.tema;
+      $("clase-detalle").textContent=cap(larga(dc,true))+". "+B()+" "+clase.sem+(esSemana()?", sesión "+clase.n:"")+"."; $("clase").href="#semanas"; $("clase").dataset.sem=clase.sem; }
+    else { $("clase-dia").hidden=true; $("clase-rotulo").textContent="Próxima clase"; $("clase-tema").textContent=esSemana()?"El periodo terminó":"El curso terminó"; $("clase-detalle").textContent="No quedan sesiones en el cronograma."; }
+
+    // Próxima entrega
+    var ent=null; for(var j=0;j<D.entregas.length;j++){ if(D.entregas[j].fecha&&aFecha(D.entregas[j].fecha)>=hoy){ent=D.entregas[j];break;} }
+    var sinF=D.entregas.filter(function(e){return !e.fecha;})[0];
+    var cu=$("entrega-cuenta");
+    if(!ent&&sinF){ cu.hidden=true; $("entrega-nombre").textContent=sinF.nombre+(sinF.detalle?" ("+sinF.detalle+")":""); $("entrega-detalle").textContent="El sílabo no indica la fecha; consulte el aula virtual."; $("entrega").removeAttribute("aria-label"); }
+    else if(ent){ var de=aFecha(ent.fecha), n=dias(de); cu.hidden=false;
+      cu.children[0].textContent=n===0?"Hoy":String(n); cu.children[0].style.fontSize=n===0?"1.8rem":""; cu.children[1].textContent=n===0?"":n===1?"día":"días";
+      $("entrega-nombre").textContent=ent.nombre;
+      $("entrega-detalle").textContent=(ent.tipo==="evalua"?"Se evalúa el "+larga(de,true):ent.tipo==="asigna"?"Se asigna el "+larga(de,true):cap(larga(de,true)))+"."+(ent.detalle?" Vale "+ent.detalle+".":"");
+      $("entrega").setAttribute("aria-label",ent.nombre+", "+faltan(de)+". "+$("entrega-detalle").textContent); }
+    else { cu.hidden=true; $("entrega-nombre").textContent="Sin trabajos pendientes"; $("entrega-detalle").textContent="Revise el aula virtual por si hay evaluaciones adicionales."; $("entrega").removeAttribute("aria-label"); }
+
+    // Matriz del semestre
+    var mx=$("matriz"); mx.innerHTML=""; var nEx=0;
+    D.semanas.forEach(function(w){ var ex=w.sesiones.some(function(s){return s.examen;}), est=estadoSemana(w), r=rango(w); if(ex) nEx++;
+      var li=el("li"), a=el("a",[est,ex?"examen":""].join(" ").trim()||null,String(w.n)); a.href="#semanas";
+      a.setAttribute("aria-label",B()+" "+w.n+(r?", "+(esSemana()?"desde el ":"")+larga(r.d0):"")+(ex?", con examen":"")+(est==="actual"?(esSemana()?", semana actual":", hoy"):est==="pasada"?", terminada":""));
+      if(est==="actual") a.setAttribute("aria-current","true");
+      a.addEventListener("click",function(){ semElegida=w.n; pintarSemana(); });
+      li.appendChild(a); mx.appendChild(li); });
+    mx.style.gridTemplateColumns="repeat("+(D.semanas.length%6===0||D.semanas.length>12?6:Math.min(D.semanas.length,6))+",1fr)";
+    $("matriz-resumen").textContent=D.semanas.length+" "+BP().toLowerCase()+(nEx?", "+nEx+" con examen":"");
+    $("matriz-titulo").textContent=esSemana()?"Su semestre":"Su curso"; $("matriz-nav").setAttribute("aria-label",BP()+" del curso");
+    $("ley-ex").hidden=!nEx; $("ley-act").textContent=esSemana()?"Esta semana":"Hoy"; $("tab-bloques").textContent=BP(); $("chips").setAttribute("aria-label","Elegir "+B().toLowerCase());
+    var pn=$("pie-nota"); pn.textContent=c.nota||""; pn.hidden=!c.nota;
+
+    var acc={}; D.recursos.concat(D.libros).forEach(function(x){ var k=x.acceso||(x.url?"En línea":"Biblioteca"); acc[k]=(acc[k]||0)+1; });
+    $("acc-recursos").textContent=Object.keys(acc).map(function(k){return acc[k]+" "+k.toLowerCase().replace(/^en /,"en ");}).join(", ");
+    $("acc-contacto").textContent=c.correo||"Correo por confirmar";
+
+    // Chips de semanas
+    var ch=$("chips"); ch.innerHTML="";
+    if(semElegida==null || !D.semanas.some(function(w){return w.n===semElegida;})) semElegida=semanaPorDefecto();
+    D.semanas.forEach(function(w){ var ex=w.sesiones.some(function(s){return s.examen;}), r=rango(w), est=estadoSemana(w);
+      var b=el("button",ex?"examen":null,String(w.n)); b.type="button"; b.dataset.n=w.n;
+      b.setAttribute("aria-label",B()+" "+w.n+(r?", "+larga(r.d0):"")+(ex?", con examen":"")+(est==="actual"?", actual":""));
+      b.addEventListener("click",function(){ semElegida=w.n; pintarSemana(); });
+      ch.appendChild(b); });
+    pintarSemana();
+    pintarTareas();
+
+    // Recursos
+    var rc=$("recursos"); rc.innerHTML="";
+    D.recursos.forEach(function(r){ var a=el("div","recurso"); var p=el("p",null); p.style.margin="0"; p.appendChild(el("span","acceso",r.acceso||"En línea")); p.appendChild(el("span","uso",r.uso)); a.appendChild(p);
+      var h=el("h4"), ln=el("a",null,r.titulo); ln.href=r.url; ln.target="_blank"; ln.rel="noopener"; h.appendChild(ln); a.appendChild(h); if(r.ref) a.appendChild(el("p",null,r.ref)); rc.appendChild(a); });
+    D.libros.forEach(function(b){ var a=el("div","recurso"); var p=el("p",null); p.style.margin="0"; p.appendChild(el("span","acceso",b.acceso||"Biblioteca")); if(b.detalle) p.appendChild(el("span","uso",b.detalle)); a.appendChild(p); a.appendChild(el("h4",null,b.ref)); rc.appendChild(a); });
+    if(!rc.children.length) rc.appendChild(el("p",null,"El sílabo no incluye recursos."));
+
+    // Evaluación
+    var ev=$("evaluacion"); ev.innerHTML="";
+    D.evaluacion.forEach(function(v){ var d=el("div","peso"); d.appendChild(el("span","pct",v.pct)); var t=el("div"); t.appendChild(el("h4",null,v.nombre)); if(v.items.length) t.appendChild(el("p",null,v.items.join(", "))); d.appendChild(t); ev.appendChild(d); });
+    (D.detallesEvaluacion||[]).forEach(function(g){ ev.appendChild(el("h4",null,g.titulo)); if(g.intro) ev.appendChild(el("p",null,g.intro)).style.margin="0 0 .4rem"; var u=el("ul"); g.items.forEach(function(x){u.appendChild(el("li",null,x));}); ev.appendChild(u); });
+    var sinFecha=D.entregas.filter(function(e){return !e.fecha;});
+    if(sinFecha.length){ ev.appendChild(el("h4",null,"Sin fecha en el sílabo")); var us=el("ul"); sinFecha.forEach(function(e){us.appendChild(el("li",null,e.nombre));}); ev.appendChild(us); }
+    var exs=ses.filter(function(s){return s.examen&&s.fecha;});
+    if(exs.length){ ev.appendChild(el("h4",null,"Fechas de examen")); var u=el("ul"); exs.forEach(function(s){u.appendChild(el("li",null,s.tema+": "+larga(aFecha(s.fecha),true)));}); ev.appendChild(u); }
+
+    // Normas
+    var nm=$("normas"); nm.innerHTML="";
+    D.normas.forEach(function(g){ nm.appendChild(el("h4",null,g.titulo)); var u=el("ul"); g.items.forEach(function(x){u.appendChild(el("li",null,x));}); nm.appendChild(u); });
+    $("p-normas").hidden=!D.normas.length;
+
+    // Contacto
+    $("c-docente").textContent=c.docente||"Por confirmar";
+    var cc=$("c-correo"), ce=$("c-escribir"); cc.textContent=c.correo||"Por confirmar";
+    if(c.correo){ var m="mailto:"+c.correo+"?subject="+encodeURIComponent((c.codigo?c.codigo+" ":"")+(c.nombre||"Consulta")); cc.href=m; ce.href=m; ce.hidden=false; } else { cc.removeAttribute("href"); ce.hidden=true; }
+    $("c-tutorias").textContent=c.tutorias||"Horario por confirmar con el docente.";
+    $("f-docente").value=c.docente||""; $("f-tutorias").value=c.tutorias||"";
+  }
+
+  function pintarSemana(){
+    document.querySelectorAll("#chips button").forEach(function(b){ var on=+b.dataset.n===semElegida; b.setAttribute("aria-pressed",String(on)); if(on && b.scrollIntoView && !$("v-semanas").hidden) b.scrollIntoView({block:"nearest",inline:"center"}); });
+    var k=-1; D.semanas.forEach(function(x,i){ if(x.n===semElegida) k=i; });
+    var w=D.semanas[k], box=$("sem-sesiones"); box.innerHTML="";
+    $("sem-ant").disabled=k<=0; $("sem-sig").disabled=k<0||k>=D.semanas.length-1;
+    if(!w){ $("sem-nombre").textContent=""; $("sem-fechas").textContent=""; return; }
+    var est=estadoSemana(w), se=$("sem-estado");
+    $("sem-nombre").textContent=B()+" "+w.n; $("sem-fechas").textContent=textoRango(rango(w));
+    se.hidden=!est; se.textContent=est==="actual"?(esSemana()?"Esta semana":"Hoy"):"Terminada"; se.className="estado-sem"+(est==="actual"?" ahora":"");
+    var vistos={}; D.semanas.forEach(function(x,i){ if(i<k) x.sesiones.forEach(function(s){ if(s.unidad) vistos[s.unidad]=1; }); });
+    w.sesiones.forEach(function(s){
+      var li=el("li"), dd=el("div","lt-dia"); dd.setAttribute("aria-hidden","true");
+      if(s.fecha){ var d=aFecha(s.fecha); dd.appendChild(el("span","d-sem",DIA[d.getDay()].slice(0,3))); dd.appendChild(el("span","d-num",String(d.getDate()))); dd.appendChild(el("span","d-mes",MES[d.getMonth()].slice(0,3))); }
+      var t=el("article","sesion"+(s.examen?" examen":""));
+      if(s.unidad && !vistos[s.unidad]){ vistos[s.unidad]=1; t.appendChild(el("p","unidad","Inicia la Unidad "+s.unidad+(D.unidades[s.unidad]?": "+D.unidades[s.unidad]:""))); }
+      t.appendChild(el("p","s-num",(s.fecha?cap(larga(aFecha(s.fecha),true))+(esSemana()?". ":""):"")+(esSemana()?"Sesión "+s.n:"")));
+      t.appendChild(el("p","s-tema",s.tema)); if(s.act) t.appendChild(el("p","s-act",s.act));
+      if(s.nota) t.appendChild(el("span","chip nota",s.nota));
+      (s.trabajos||[]).forEach(function(tr){ t.appendChild(el("span","chip"+(tr.tipo==="evalua"?" evalua":""),(tr.tipo==="evalua"?"Se evalúa el Trabajo ":"Se asigna el Trabajo ")+tr.n)); });
+      (s.etiquetas||[]).forEach(function(x){ t.appendChild(el("span","chip"+(x.tipo==="evalua"?" evalua":""),x.texto)); });
+      if(s.contenidos&&s.contenidos.length){ var dc=el("details","contenidos"); dc.appendChild(el("summary",null,"Contenidos ("+s.contenidos.length+")")); var uc=el("ul"); s.contenidos.forEach(function(x){uc.appendChild(el("li",null,x));}); dc.appendChild(uc); t.appendChild(dc); }
+      li.appendChild(dd); li.appendChild(t); box.appendChild(li); });
+  }
+  $("sem-ant").addEventListener("click",function(){ var i=D.semanas.findIndex(function(x){return x.n===semElegida;}); if(i>0){ semElegida=D.semanas[i-1].n; pintarSemana(); } });
+  $("sem-sig").addEventListener("click",function(){ var i=D.semanas.findIndex(function(x){return x.n===semElegida;}); if(i<D.semanas.length-1){ semElegida=D.semanas[i+1].n; pintarSemana(); } });
+
+  // Tareas en este dispositivo
+  var marcas={}, CLAVE="";
+  function pintarTareas(){
+    CLAVE="tareas-"+(D.curso.codigo||"curso")+"-"+(D.curso.periodo||"").slice(0,6);
+    try{ marcas=JSON.parse(localStorage.getItem(CLAVE)||"{}")||{}; }catch(e){ marcas={}; }
+    var lp=$("lista-prox"), la=$("lista-pas"), ls=$("lista-sin"); lp.innerHTML=""; la.innerHTML=""; ls.innerHTML="";
+    D.entregas.forEach(function(e){ var d=e.fecha?aFecha(e.fecha):null, pasada=d&&d<hoy, li=el("li",pasada?"pasada":null), lb=el("label"), cb=el("input");
+      cb.type="checkbox"; cb.dataset.id=e.id; cb.checked=!!marcas[e.id]; if(cb.checked) li.classList.add("hecha");
+      var sp=el("span","t-cuerpo"), tn=el("span","t-nombre",e.nombre); if(e.detalle) tn.appendChild(el("span","t-peso",e.detalle)); sp.appendChild(tn);
+      sp.appendChild(el("span","t-fecha",!d?"Fecha por confirmar en el aula virtual":(e.sem?B()+" "+e.sem+". ":"")+(e.tipo==="evalua"?"Se evalúa el "+larga(d,true):e.tipo==="asigna"?"Se asigna el "+larga(d,true):cap(larga(d,true)))));
+      if(d&&!pasada) sp.appendChild(el("span","t-falta",cap(faltan(d))));
+      lb.appendChild(sp); lb.appendChild(cb); li.appendChild(lb); (!d?ls:pasada?la:lp).appendChild(li);
+      cb.addEventListener("change",function(){ marcas[e.id]=cb.checked; li.classList.toggle("hecha",cb.checked); try{localStorage.setItem(CLAVE,JSON.stringify(marcas));}catch(x){} progreso(); }); });
+    $("t-prox").hidden=lp.hidden=!lp.children.length; $("t-pas").hidden=la.hidden=!la.children.length; $("t-sin").hidden=ls.hidden=!ls.children.length;
+    progreso();
+  }
+  function progreso(){ var cas=document.querySelectorAll(".tareas input"), n=0; cas.forEach(function(c){if(c.checked)n++;});
+    $("res-n").textContent=n; $("res-txt").textContent="de "+cas.length+" marcadas"; $("barra").style.width=(cas.length?100*n/cas.length:0)+"%";
+    var pend=D.entregas.filter(function(e){ if(!e.fecha) return false; var k=dias(aFecha(e.fecha)); return k>=0 && k<=7 && !marcas[e.id]; }).length;
+    var ins=$("insignia"); if(pend){ ins.setAttribute("data-n",pend); } else ins.removeAttribute("data-n"); }
+  $("reiniciar").addEventListener("click",function(){ marcas={}; try{localStorage.removeItem(CLAVE);}catch(e){} pintarTareas(); });
+
+  // Navegación por pestañas
+  var VISTAS=["hoy","semanas","tareas","mas"];
+  function ir(){ var v=(location.hash||"#hoy").slice(1); if(v==="docente"){ v="mas"; $("docente").open=true; } if(VISTAS.indexOf(v)<0) v="hoy";
+    VISTAS.forEach(function(x){ $("v-"+x).hidden=x!==v; });
+    document.querySelectorAll("nav.pestanas a").forEach(function(a){ if(a.dataset.v===v) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+    window.scrollTo(0,0); if(v==="semanas") pintarSemana(); }
+  window.addEventListener("hashchange",ir);
+  document.querySelectorAll("[data-abrir]").forEach(function(a){ a.addEventListener("click",function(){ $(a.dataset.abrir).open=true; }); });
+  $("clase").addEventListener("click",function(){ if(this.dataset.sem) semElegida=+this.dataset.sem; });
+
+  // Instalación y modo sin conexión
+  var aviso=null;
+  window.addEventListener("beforeinstallprompt",function(e){ e.preventDefault(); aviso=e; $("instalar").hidden=false; });
+  $("instalar").addEventListener("click",function(){ if(!aviso) return; aviso.prompt(); aviso.userChoice.then(function(){ aviso=null; $("instalar").hidden=true; }); });
+  if(window.matchMedia && matchMedia("(display-mode: standalone)").matches){ $("instalar-texto").textContent="La app ya está instalada en este dispositivo."; }
+  if("serviceWorker" in navigator && (location.protocol==="https:"||location.hostname==="localhost")){ try{ navigator.serviceWorker.register("sw.js").catch(function(){}); }catch(e){} }
+
+  // Herramienta del docente
+  var estado=$("estado"), avisos=$("avisos");
+  function mostrarEstado(t,err){ estado.textContent=t; estado.className="estado"+(err?" error":""); }
+  var cargaM=null;
+  function mammoth(){ if(window.mammoth) return Promise.resolve(window.mammoth);
+    if(!cargaM) cargaM=new Promise(function(ok,mal){ var s=document.createElement("script"); s.src="https://cdn.jsdelivr.net/npm/mammoth@1.13.0/mammoth.browser.min.js"; s.onload=function(){ok(window.mammoth);}; s.onerror=function(){cargaM=null; mal(new Error("red"));}; document.head.appendChild(s); });
+    return cargaM; }
+  $("archivo").addEventListener("change",function(ev){
+    var f=ev.target.files[0]; avisos.innerHTML=""; if(!f) return;
+    if(!/\.docx$/i.test(f.name)){ mostrarEstado("Ese archivo no es .docx. Guarde el sílabo como documento de Word (.docx) y vuelva a cargarlo.",true); return; }
+    mostrarEstado("Leyendo el sílabo…");
+    Promise.all([mammoth(), f.arrayBuffer()]).then(function(r){ return r[0].convertToHtml({arrayBuffer:r[1]}); })
+    .then(function(res){
+      var datos=leerSilabo(res.value, DOMParser), nS=0; datos.semanas.forEach(function(w){nS+=w.sesiones.length;});
+      if(!nS && typeof leerSilaboSimple==="function"){ var alt=leerSilaboSimple(res.value, DOMParser), n2=0; alt.semanas.forEach(function(w){n2+=w.sesiones.length;}); if(n2){ datos=alt; nS=n2; } }
+      if(!nS){ mostrarEstado("No se encontraron sesiones. Verifique que use la plantilla institucional con la tabla de planificación por sesión.",true); return; }
+      var tut=D.curso.tutorias; D=datos; if(!/por confirmar/i.test(tut||"")) D.curso.tutorias=tut; semElegida=null;
+      mostrarEstado("Sílabo leído: "+D.semanas.length+" "+BP().toLowerCase()+", "+nS+" sesiones y "+D.entregas.length+" actividades evaluadas. Revise la vista previa.");
+      (datos.avisos||[]).forEach(function(a){avisos.appendChild(el("li",null,a));});
+      $("aviso-vista").hidden=false; $("restaurar").hidden=false; render();
+    }).catch(function(e){ mostrarEstado(e&&e.message==="red"?"No se pudo cargar el lector de Word. Revise su conexión e intente de nuevo.":"No se pudo leer el archivo. Verifique que sea un .docx válido y que no esté protegido.",true); });
+  });
+  $("aplicar").addEventListener("click",function(){ D.curso.docente=$("f-docente").value.trim(); D.curso.tutorias=$("f-tutorias").value.trim(); render(); $("aviso-vista").hidden=false; mostrarEstado("Cambios aplicados a la vista previa. Descargue el archivo para publicarlos."); });
+  $("restaurar").addEventListener("click",function(){ D=JSON.parse(JSON.stringify(ORIGINAL)); semElegida=null; avisos.innerHTML=""; $("archivo").value=""; $("aviso-vista").hidden=true; $("restaurar").hidden=true; mostrarEstado("Se restauró la versión publicada."); render(); });
+  function generar(){
+    D.curso.docente=$("f-docente").value.trim(); D.curso.tutorias=$("f-tutorias").value.trim();
+    var datos=JSON.parse(JSON.stringify(D)); delete datos.avisos;
+    var doc=new DOMParser().parseFromString(PLANTILLA,"text/html");
+    [doc.head,doc.body].forEach(function(p){ [].slice.call(p.children).forEach(function(n){ if(!n.hasAttribute("data-p")) n.remove(); }); });
+    [].slice.call(doc.documentElement.attributes).forEach(function(a){ if(a.name!=="lang") doc.documentElement.removeAttribute(a.name); });
+    doc.getElementById("datos-curso").textContent=JSON.stringify(datos).replace(/</g,"\\u003c");
+    doc.title=datos.curso.nombre||"Curso";
+    var t=doc.querySelector('meta[name="apple-mobile-web-app-title"]'); if(t) t.setAttribute("content",(datos.curso.nombre||"Curso").slice(0,30));
+    return "<!DOCTYPE html>\n"+doc.documentElement.outerHTML;
+  }
+  $("descargar").addEventListener("click",function(){
+    var html=generar();
+    var usar=(window.claude&&window.claude.use)?window.claude.use("downloads"):Promise.resolve(null);
+    usar.then(function(dl){
+      if(dl) return dl.save({filename:"index.html",data:html}).then(function(){mostrarEstado("Archivo index.html listo.");},function(e){ mostrarEstado(e&&e.code==="declined"?"Descarga cancelada.":"No se pudo descargar desde esta vista.",!(e&&e.code==="declined")); });
+      var a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([html],{type:"text/html"})); a.download="index.html"; document.body.appendChild(a); a.click(); setTimeout(function(){URL.revokeObjectURL(a.href); a.remove();},1000);
+      mostrarEstado("Archivo index.html descargado.");
+    });
+  });
+
+  render(); ir();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+App móvil · Competencias Humanas para el Futuro (CHF) · UTPL
+Aplicación web instalable (PWA) para publicar en GitHub Pages.
+
+CONTENIDO DE LA CARPETA app-movil
+  index.html             La app, con los datos del sílabo incluidos.
+  manifest.webmanifest   Nombre, colores e íconos para instalarla.
+  sw.js                  Permite abrirla sin conexión.
+  icons/                 Íconos de la app (no cambie sus nombres).
+  LEEME.txt              Este archivo.
+
+SUBIR A GITHUB (desde el navegador)
+  1. Abra su repositorio público en github.com.
+  2. Pulse «Add file» > «Upload files».
+  3. Arrastre la carpeta app-movil completa (en Chrome o Edge se
+     puede arrastrar la carpeta entera, con la subcarpeta icons).
+  4. Pulse «Commit changes».
+  5. Si aún no lo hizo: Settings > Pages > Deploy from a branch >
+     main y / (root) > Save.
+
+DIRECCIÓN DE LA APP
+  https://SU-USUARIO.github.io/NOMBRE-DEL-REPOSITORIO/app-movil/
+  Ábrala desde el teléfono e instálela:
+    Android (Chrome): menú ⋮ > «Instalar aplicación».
+    iPhone (Safari): Compartir > «Agregar a inicio».
+
+ACTUALIZAR CON UN NUEVO SÍLABO
+  En la app: Más > «Para el docente». Cargue el .docx, revise la vista
+  previa, complete tutorías y pulse «Descargar index.html». Luego, en
+  GitHub, entre a la carpeta app-movil > «Add file» > «Upload files»,
+  suba ese index.html (reemplaza al anterior) y «Commit changes».
+  Los demás archivos no cambian.
+
+RECUERDE
+  El repositorio es público: no suba el sílabo en Word ni archivos con
+  datos personales. Marcar tareas en la app no equivale a entregarlas;
+  las entregas se hacen en el aula virtual.
